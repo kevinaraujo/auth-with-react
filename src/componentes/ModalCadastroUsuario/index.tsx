@@ -4,7 +4,12 @@ import imagemPrincipal from './assets/login.png'
 import axios from 'axios'
 import './ModalCadastroUsuario.css'
 
-const ModalCadastroUsuario = () => {
+interface PropsModalCadastroUsuario {
+    aberta: boolean,
+    aoFechar: () => void
+}
+
+const ModalCadastroUsuario = ({aberta, aoFechar} : PropsModalCadastroUsuario) => {
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [endereco, setEndereco] = useState('')
@@ -29,15 +34,15 @@ const ModalCadastroUsuario = () => {
         const url = 'http://localhost:8000/public/registrar'
         axios.post(url, usuario)
             .then(() => {
-                    alert('Usuário cadastrado!')
-                    setNome('')
-                    setEmail('')
-                    setEndereco('')
-                    setComplemento('')
-                    setCep('')
-                    setSenha('')
-                    setSenhaConfirmada('')
-
+                alert('Usuário cadastrado!')
+                setNome('')
+                setEmail('')
+                setEndereco('')
+                setComplemento('')
+                setCep('')
+                setSenha('')
+                setSenhaConfirmada('')
+                aoFechar()
             })
             .catch(() => {
                 alert('OPS! Alguma coisa deu errado!')
@@ -46,8 +51,8 @@ const ModalCadastroUsuario = () => {
     return (
         <AbModal
             titulo="Cadastrar"
-            aberta={true}
-            aoFechar={() => console.log('fechar')}>
+            aberta={aberta}
+            aoFechar={aoFechar}>
             <div className="corpoModalCadastro">
                 <figure>
                     <img src={imagemPrincipal} alt="Monitor com uma fechadura e uma porta ao lado" />
