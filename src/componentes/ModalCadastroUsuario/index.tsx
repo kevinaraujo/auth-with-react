@@ -1,7 +1,7 @@
 import { AbBotao, AbCampoTexto, AbModal } from "ds-alurabooks"
-import { useState } from "react"
+import React, { useState } from "react"
 import imagemPrincipal from './assets/login.png'
-
+import axios from 'axios'
 import './ModalCadastroUsuario.css'
 
 const ModalCadastroUsuario = () => {
@@ -14,6 +14,35 @@ const ModalCadastroUsuario = () => {
     const [senhaConfirmada, setSenhaConfirmada] = useState('')
 
 
+    const aoSubmeterFormulario = (evento: React.FormEvent<HTMLFormElement>) => {
+        evento.preventDefault()
+        const usuario = {
+            nome,
+            email,
+            endereco,
+            complemento,
+            cep,
+            senha,
+            senhaConfirmada
+        }
+
+        const url = 'http://localhost:8000/public/registrar'
+        axios.post(url, usuario)
+            .then(() => {
+                    alert('Usuário cadastrado!')
+                    setNome('')
+                    setEmail('')
+                    setEndereco('')
+                    setComplemento('')
+                    setCep('')
+                    setSenha('')
+                    setSenhaConfirmada('')
+
+            })
+            .catch(() => {
+                alert('OPS! Alguma coisa deu errado!')
+            })
+    }
     return (
         <AbModal
             titulo="Cadastrar"
@@ -24,7 +53,7 @@ const ModalCadastroUsuario = () => {
                     <img src={imagemPrincipal} alt="Monitor com uma fechadura e uma porta ao lado" />
                 </figure>
 
-                <form>
+                <form onSubmit={aoSubmeterFormulario}>
                     <AbCampoTexto
                         label='Nome'
                         value={nome}
