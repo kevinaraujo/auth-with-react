@@ -6,10 +6,11 @@ import './ModalLoginUsuario.css'
 
 interface PropsModalLoginUsuario {
     aberta: boolean,
-    aoFechar: () => void
+    aoFechar: () => void,
+    aoEfetuarLogin: () => void
 }
 
-const ModalLoginUsuario = ({aberta, aoFechar} : PropsModalLoginUsuario) => {
+const ModalLoginUsuario = ({aberta, aoFechar, aoEfetuarLogin} : PropsModalLoginUsuario) => {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
 
@@ -27,7 +28,7 @@ const ModalLoginUsuario = ({aberta, aoFechar} : PropsModalLoginUsuario) => {
                 sessionStorage.setItem('token', resposta.data.access_token)
                 setEmail('')
                 setSenha('')
-                aoFechar()
+                aoEfetuarLogin()
             })  
             .catch(erro => {
                 if(erro?.response.data?.message) {
