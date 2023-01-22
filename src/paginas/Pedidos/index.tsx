@@ -1,11 +1,12 @@
 import { AbBotao } from "ds-alurabooks"
+import './Pedidos.css'
 
 const Pedidos = () => {
     return (
         <section className="pedidos">
             <h1>Meus Pedidos</h1>
 
-           <div>
+           <div className="pedido">
                 <ul>
                     <li>Pedido: <strong>123</strong></li>
                     <li>Data do pedido: <strong>09/01/2023</strong></li>
