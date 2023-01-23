@@ -2,12 +2,13 @@ import { AbBotao } from "ds-alurabooks"
 import './Pedidos.css'
 
 import axios from 'axios'
-import { useEffect } from "react"
-import { json } from "stream/consumers"
+import { useEffect, useState } from "react"
 import { IPedido } from "../../interfaces/IPedido"
 
 const Pedidos = () => {
-
+    const [pedidos, setPedidos] = useState<IPedido[]>([])
+    const formatador = Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'});
+    
     useEffect(() => {
         const token = sessionStorage.getItem('token')
         const url = 'http://localhost:8000/pedidos'
@@ -17,7 +18,7 @@ const Pedidos = () => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => console.log(response.data))
+        .then(response => setPedidos(response.data))
         .catch(erro => console.log(erro))
     }, [])
 
@@ -25,16 +26,18 @@ const Pedidos = () => {
         <section className="pedidos">
             <h1>Meus Pedidos</h1>
 
-           <div className="pedido">
-                <ul>
-                    <li>Pedido: <strong>123</strong></li>
-                    <li>Data do pedido: <strong>09/01/2023</strong></li>
-                    <li>Valor total: <strong>R$ 42,00</strong></li>
-                    <li>Entrega realizada em: <strong>10/02/2023</strong></li>
-                </ul>
+            {pedidos.map(pedido => (
+                <div className="pedido" key={pedido.id}>
+                    <ul>
+                        <li>Pedido: <strong>{pedido.id}</strong></li>
+                        <li>Data do pedido: <strong>{new Date(pedido.data).toLocaleDateString()}</strong></li>
+                        <li>Valor total: <strong>{formatador.format(pedido.total)}</strong></li>
+                        <li>Entrega realizada em: <strong>{new Date(pedido.entrega).toLocaleDateString()}</strong></li>
+                    </ul>
 
-                <AbBotao texto="Detalhes"/>
-           </div>
+                    <AbBotao texto="Detalhes"/>
+            </div>
+           ))}
         </section>
     )
 }
