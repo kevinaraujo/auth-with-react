@@ -1,19 +1,18 @@
 import { AbBotao } from "ds-alurabooks"
-import './Pedidos.css'
-
-import axios from 'axios'
 import { useEffect, useState } from "react"
 import { IPedido } from "../../interfaces/IPedido"
+import http from "../../http"
+import './Pedidos.css'
 
 const Pedidos = () => {
     const [pedidos, setPedidos] = useState<IPedido[]>([])
     const formatador = Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'});
-    
+
     useEffect(() => {
         const token = sessionStorage.getItem('token')
-        const url = 'http://localhost:8000/pedidos'
+        const url = 'pedidos'
 
-        axios.get<IPedido[]>(url, {
+        http.get<IPedido[]>(url, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
